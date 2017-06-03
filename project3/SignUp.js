@@ -5,6 +5,7 @@ import axios from 'axios';
 import App from './main';
 import { styles, Text, TextInput, View, ButtonBlue } from './Styles';
 import Content from './Content';
+import Loading from './Loading';
 
 // add to state email (empty)
 class SignUp extends React.Component {
@@ -13,22 +14,30 @@ class SignUp extends React.Component {
     this.state = {
       email: '',
       password: '',
+      // Loading (spinner overlay)
+      visible: false
     };
     this.signUp = this.signUp.bind(this);
+    this.loadSpinner = this.loadSpinner.bind(this);
   }
 
+  loadSpinner() {
+     this.setState = {
+      visible: true
+    };
+
+  }
   signUp() {
     axios.post('https://mobile-server-ii.herokuapp.com/users', {
       email: this.state.email,
       password: this.state.password,
     }).then((response) => {
+      console.log('response', response);
       if (response.data.code === 11000) {
         return this.setState({
           error: 'Email already taken',
         });
       }
-      console.log('response', response);
-
     AsyncStorage.setItem('token', response.data.token);
       Alert.alert(
         "Signup Success!",
@@ -42,7 +51,7 @@ class SignUp extends React.Component {
       <View>
         <Text>Fill out your details and </Text>
         <Text>experience the AWESOME</Text>
-      {/*} <Text>{this.state.error && this.state.error.length ? this.state.error : null}</Text> */}
+    {/*} <Text>{this.state.error && this.state.error.length ? this.state.error : null}</Text> */}
         <TextInput placeholder='enter email address' autofocus='true'
           onChangeText={(email) => this.setState({ email })}
           value={this.state.email}
@@ -52,9 +61,10 @@ class SignUp extends React.Component {
           value={this.state.password}
         />
         <ButtonBlue isDisabled={this.state.email === '' ||
-      this.state.password === ''} onPress={this.signUp}>
-        Lay the Awesome on me
+          this.state.password === ''} onPress={this.signUp}>
+            Lay the Awesome on me
         </ButtonBlue>
+
       </View>
     );
   }

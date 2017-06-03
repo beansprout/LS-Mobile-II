@@ -1,7 +1,7 @@
 import Expo from 'expo';
 import React, {Component} from 'react';
 import {StyleSheet, AsyncStorage } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 import SignUp from './SignUp';
 import Content from './Content';
 import  { styles, Text, View, ButtonBlue } from './Styles'
@@ -27,6 +27,7 @@ componentWillMount() {
     AsyncStorage
       .getItem('token')
       .then((token) => {
+        console.log(token)
         // this.props.navigation.navigate('Content');
       });
   };
